@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+<cfcomponent>
+	<cfproperty name="${1:property}" type="${2:type}">
+
+	<cffunction name="init" access="public" returntype="${3:returntype}" >
+
+		<cfreturn this />
+	</cffunction>
+</cfcomponent>
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>cfcomp</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

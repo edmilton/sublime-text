@@ -1,0 +1,13 @@
+{
+	"auto_upgrade_last_run": null,
+	"installed_packages":
+	[
+		"ColdFusion",
+		"Emmet",
+		"IndentGuides",
+		"Package Control",
+		"SideBarEnhancements",
+		"SVN",
+		"Tortoise"
+	]
+}

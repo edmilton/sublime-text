@@ -1,0 +1,206 @@
+[
+    { "keys": ["."], "command": "dot_completions", "context":
+        [
+             {"key": "selector", "operator": "equal", "operand": "source.cfscript - string - comment,punctuation.definition.hash", "match_all": true }
+        ]
+    },
+    { "keys": [">"], "command": "move", "args": {"by": "characters", "forward": true}, "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "meta.tag"},
+            { "key": "following_text", "operator": "regex_contains", "operand": "^>", "match_all": true }
+        ]
+    },
+    // Auto-close ColdFusion block tags
+    { "keys": [">"], "command": "close_cftag", "context":
+        [
+            // selectors aren't working as I expect, we'll just use general scopes here
+            { "key": "selector", "operator": "equal", "operand": "text.html.cfm, source.cfscript.cfc"},
+            { "key": "following_text", "operator": "not_regex_contains", "operand": "^>", "match_all": true }
+        ]
+    },
+    // Auto-pair parens
+    { "keys": ["("], "command": "insert_snippet", "args": {"contents": "($0)"}, "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t|#|>| |\\)|]|;|\\}|$)", "match_all": true }
+        ]
+    },
+    // Auto-pair quotes
+    { "keys": ["\""], "command": "insert_snippet", "args": {"contents": "\"$0\""}, "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t|#|>| |\\)|]|\\}|$)", "match_all": true },
+            { "key": "preceding_text", "operator": "not_regex_contains", "operand": "[\"a-zA-Z0-9_]$", "match_all": true },
+            { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.double", "match_all": true }
+        ]
+    },
+    // Auto-pair single quotes
+    { "keys": ["'"], "command": "insert_snippet", "args": {"contents": "'$0'"}, "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t|#|>| |\\)|]|\\}|$)", "match_all": true },
+            { "key": "preceding_text", "operator": "not_regex_contains", "operand": "['a-zA-Z0-9_]$", "match_all": true },
+            { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.single", "match_all": true }
+        ]
+    },
+    // alt+enter terminates statement and adds new line
+    {
+    "keys": ["alt+enter"], "command": "run_macro_file", "args": {"file": "Packages/ColdFusion/Terminate Statement.sublime-macro"},
+    "context": [ {"key": "selector", "operator": "equal", "operand": "text.html.cfm,source.cfscript", "match_all": true }]
+    },
+    // javadoc add line
+    {
+    "keys": ["enter"], "command": "run_macro_file", "args": {"file": "Packages/ColdFusion/JavaDoc Add Line.sublime-macro"},
+    "context": [ {"key": "selector", "operator": "equal", "operand": "comment.block.documentation.javadoc", "match_all": true }]
+    },
+    // backspace javadoc delete line
+    {
+    "keys": ["backspace"], "command": "run_macro_file",
+    "args": {"file": "Packages/ColdFusion/JavaDoc Delete Line.sublime-macro"},
+    "context":
+      [
+        { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+        { "key": "preceding_text", "operator": "regex_contains", "operand": "\\*$", "match_all": true },
+        { "key": "selector", "operator": "equal", "operand": "comment.block.documentation.javadoc", "match_all": true }
+      ]
+    },
+    // ctrl+shift+3 <cfoutput>#SELECTION#</cfoutput>
+    {
+    "keys": ["ctrl+shift+3"], "command": "insert_snippet",
+    "args": { "contents": "<cfoutput>#${0:$SELECTION}#</cfoutput>" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "text.html.cfm"},
+        {"key": "selector", "operator": "not_equal", "operand": "source.cfscript.embedded.cfml" }
+    ]
+    },
+    // ctrl+shift+= <cfset />
+    {
+    "keys": ["ctrl+shift+="], "command": "insert_snippet",
+    "args": { "contents": "<cfset ${1:$SELECTION} = $2>" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "text.html.cfm"},
+        {"key": "selector", "operator": "not_equal", "operand": "source.cfscript.embedded.cfml" }
+    ]
+    },
+    // alt+shift+r <cfscript>$0</cfscript>
+    {
+    "keys": ["alt+shift+r"], "command": "insert_snippet",
+    "args": { "contents": "<cfscript>\n\t${0:$SELECTION}\n</cfscript>" },
+    "context":
+      [
+        {"key": "selector", "operator": "equal", "operand": "text.html.cfm"},
+        {"key": "selector", "operator": "not_equal", "operand": "source.cfscript.embedded.cfml" }
+      ]
+    },
+    // ctrl+alt+a <cfabort />
+    {
+    "keys": ["ctrl+alt+a"], "command": "insert_snippet",
+    "args": { "contents": "<cfabort />" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "text.html.cfm"},
+        {"key": "selector", "operator": "not_equal", "operand": "source.cfscript.embedded.cfml" }
+    ]
+    },
+    // ctrl+shift+o writeOutput();
+    {
+    "keys": ["ctrl+shift+o"], "command": "insert_snippet",
+    "args": { "contents": "writeOutput(${0:$SELECTION});" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "source.cfscript"}
+    ]
+    },
+    // ctrl+shift+o <cfoutput></cfoutput>
+    {
+    "keys": ["ctrl+shift+o"], "command": "insert_snippet",
+    "args": { "contents": "<cfoutput>${0:$SELECTION}</cfoutput>" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "text.html.cfm"},
+        {"key": "selector", "operator": "not_equal", "operand": "source.cfscript.embedded.cfml"}
+    ]
+    },
+    // ctrl+alt+d writeDump();
+    {
+    "keys": ["ctrl+alt+d"], "command": "insert_snippet",
+    "args": { "contents": "writeDump(${0:$SELECTION});" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "source.cfscript"}
+    ]
+    },
+    // ctrl+alt+d  <cfdump var="##">
+    {
+    "keys": ["ctrl+alt+d"], "command": "insert_snippet",
+    "args": { "contents": "<cfdump var=\"#${1:$SELECTION}#\" />" },
+    "context":
+    [
+        {"key": "selector", "operator": "equal", "operand": "text.html.cfm"},
+        {"key": "selector", "operator": "not_equal", "operand": "source.cfscript.embedded.cfml"}
+    ]
+    },
+    // ctrl+alt+shift+/ javadoc comment
+    {
+    "keys": ["ctrl+alt+shift+/"], "command": "insert_snippet",
+    "args": { "contents": "/**\n* $0\n*/" },
+    "context":
+      [
+        {"key": "selector", "operator": "equal", "operand": "source.cfscript" }
+      ]
+    },
+    // shift+3 wrap selection with hash
+    {
+    "keys": ["#"], "command": "insert_snippet",
+    "args": {"contents": "#${0:$SELECTION}#"},
+    "context":
+      [
+        { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+        { "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true },
+        { "key": "selector", "operator": "equal", "operand": "text.html.cfm,source.cfscript", "match_all": true }
+      ]
+    },
+    // shift+3 auto_match hash
+    {
+    "keys": ["#"], "command": "insert_snippet",
+    "args": {"contents": "#$0#"},
+    "context":
+      [
+        { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+        { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+        { "key": "selector", "operator": "equal", "operand": "text.html.cfm,source.cfscript", "match_all": true }
+      ]
+    },
+    // shift+3 move cursor forward to close hash
+    {
+    "keys": ["#"], "command": "move",
+    "args": {"by": "characters", "forward": true},
+    "context":
+      [
+        { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+        { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+        { "key": "following_text", "operator": "regex_contains", "operand": "^#", "match_all": true },
+        { "key": "selector", "operator": "equal", "operand": "text.html.cfm,source.cfscript", "match_all": true }
+      ]
+    },
+    // backspace removes both hash marks
+    {
+    "keys": ["backspace"], "command": "run_macro_file",
+    "args": {"file": "Packages/Default/Delete Left Right.sublime-macro"},
+    "context":
+      [
+        { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+        { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+        { "key": "preceding_text", "operator": "regex_contains", "operand": "#$", "match_all": true },
+        { "key": "following_text", "operator": "regex_contains", "operand": "^#", "match_all": true },
+        { "key": "selector", "operator": "equal", "operand": "text.html.cfm,source.cfscript", "match_all": true }
+      ]
+    }
+]
